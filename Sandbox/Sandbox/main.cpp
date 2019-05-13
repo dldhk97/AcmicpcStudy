@@ -58,11 +58,15 @@ int main()
 				break;
 			}
 		}
-		if(isNew)			
+		if (isNew)
 			dataArr.push_back(std::pair<int, int>(userInput, 0));
 		tempArr.push_back(userInput);
 	}
-	int avg = round(sum / n);
+	int avg;
+	if (sum >= 0)
+		avg = sum / n + 0.5;
+	else
+		avg = sum / n - 0.5;
 	printf("%d\n", avg);
 
 	std::sort(dataArr.begin(), dataArr.end());

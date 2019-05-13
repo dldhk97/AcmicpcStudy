@@ -39,7 +39,7 @@ int main()
 	std::vector<std::pair<int, int>> dataArr;
 	std::vector<int> tempArr;
 
-	double sum = 0.0;
+	int sum = 0;
 	scanf("%d", &n);
 
 	int userInput, range;
@@ -62,7 +62,7 @@ int main()
 			dataArr.push_back(std::pair<int, int>(userInput, 0));
 		tempArr.push_back(userInput);
 	}
-	int avg = round(sum / n);
+	int avg = sum / n;
 	printf("%d\n", avg);
 
 	std::sort(dataArr.begin(), dataArr.end());
