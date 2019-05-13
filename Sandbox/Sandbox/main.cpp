@@ -30,40 +30,47 @@
 
 bool compare(const std::pair<int, int> &a, const std::pair<int, int> &b)
 {
-	if (a.second == b.second)
-		return a.first < b.first;
 	return a.second > b.second;
 }
 
 int main()
 {
 	int n;
-	std::vector<std::pair<int,int>> dataArr;
+	std::vector<std::pair<int, int>> dataArr;
+	std::vector<int> tempArr;
 
 	double sum = 0.0;
 	scanf("%d", &n);
 
 	int userInput, range;
+	bool isNew;
 	for (int i = 0; i < n; i++)
 	{
+		isNew = true;
 		scanf("%d", &userInput);
-		dataArr.push_back(std::pair<int,int>(userInput, 0));
-		sum += dataArr[i].first;
-		for (int j = 0; j < i; j++)
-			if (dataArr[i].first == dataArr[j].first)
+		sum += userInput;
+		for (int j = 0; j < dataArr.size(); j++)
+		{
+			if (userInput == dataArr[j].first)
 			{
 				dataArr[j].second++;
-				dataArr[i].second++;
+				isNew = false;
+				break;
 			}
+		}
+		if(isNew)			
+			dataArr.push_back(std::pair<int, int>(userInput, 0));
+		tempArr.push_back(userInput);
 	}
 	int avg = round(sum / n);
-	printf("avg = %d\n", avg);
+	printf("%d\n", avg);
 
 	std::sort(dataArr.begin(), dataArr.end());
+	std::sort(tempArr.begin(), tempArr.end());
 
-	range = dataArr[n - 1].first - dataArr[0].first;
+	range = tempArr[n - 1] - tempArr[0];
 
-	printf("middleValue = %d\n", dataArr[n / 2]);
+	printf("%d\n", tempArr[n / 2]);
 
 	std::sort(dataArr.begin(), dataArr.end(), compare);
 	int mode;
@@ -74,15 +81,14 @@ int main()
 	else
 	{
 		if (dataArr[0].second == dataArr[1].second)
-			mode = dataArr[n - 2].first;
+			mode = dataArr[1].first;
 		else
 			mode = dataArr[0].first;
 	}
-	
 
-	printf("mode = %d\n", mode);
+	printf("%d\n", mode);
 
-	printf("range = %d\n", range);
+	printf("%d\n", range);
 
 	return 0;
 }

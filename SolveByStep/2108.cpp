@@ -28,71 +28,67 @@
 #include <vector>
 #include <algorithm>
 
-const int MAX_ABS = 4000;
-
-void quickSort(int *dataArr, int start, int end)
+bool compare(const std::pair<int, int> &a, const std::pair<int, int> &b)
 {
-	if (start >= end)
-		return;
-
-	int key = start;
-	int i = start + 1, j = end, temp;
-
-	while (i <= j)
-	{
-		while (i <= end && dataArr[i] <= dataArr[key])
-			i++;
-		while (j > start && dataArr[j] >= dataArr[key])
-			j--;
-		if (i > j)
-		{
-			temp = dataArr[j];
-			dataArr[j] = dataArr[key];
-			dataArr[key] = temp;
-		}
-		else
-		{
-			temp = dataArr[i];
-			dataArr[i] = dataArr[j];
-			dataArr[j] = temp;
-		}
-	}
-	quickSort(dataArr, start, j - 1);
-	quickSort(dataArr, j + 1, end);
+	return a.second > b.second;
 }
-
-//たたたたたたたたたたたたた
-//困斗稽 陥獣測獣陥...
-//たたたたたたたたたたたたた
 
 int main()
 {
 	int n;
-	int *dataArr;
-	int commonCnt[MAX_ABS * 2 + 1];
-
-	for (int i = 0; i < MAX_ABS * 2 + 1; i++)
-		commonCnt[i] = 0;
+	std::vector<std::pair<int, int>> dataArr;
+	std::vector<int> tempArr;
 
 	double sum = 0.0;
 	scanf("%d", &n);
-	dataArr = new int[n];
 
+	int userInput, range;
+	bool isNew;
 	for (int i = 0; i < n; i++)
 	{
-		scanf("%d", &dataArr[i]);
-		sum += dataArr[i];
-		commonCnt[dataArr[i] + MAX_ABS]++;
+		isNew = true;
+		scanf("%d", &userInput);
+		sum += userInput;
+		for (int j = 0; j < dataArr.size(); j++)
+		{
+			if (userInput == dataArr[j].first)
+			{
+				dataArr[j].second++;
+				isNew = false;
+				break;
+			}
+		}
+		if (isNew)
+			dataArr.push_back(std::pair<int, int>(userInput, 0));
+		tempArr.push_back(userInput);
 	}
 	int avg = round(sum / n);
-	printf("avg = %d\n", avg);
+	printf("%d\n", avg);
 
-	quickSort(dataArr, 0, n - 1);
-	printf("middleValue = %d\n", dataArr[n / 2]);
+	std::sort(dataArr.begin(), dataArr.end());
+	std::sort(tempArr.begin(), tempArr.end());
 
-	//int mode = getMode(commonCnt) - 4000;
-	//printf("modeValue = %d\n", mode);
+	range = tempArr[n - 1] - tempArr[0];
 
-	delete[] dataArr;
+	printf("%d\n", tempArr[n / 2]);
+
+	std::sort(dataArr.begin(), dataArr.end(), compare);
+	int mode;
+	if (n == 1)
+	{
+		mode = dataArr[0].first;
+	}
+	else
+	{
+		if (dataArr[0].second == dataArr[1].second)
+			mode = dataArr[1].first;
+		else
+			mode = dataArr[0].first;
+	}
+
+	printf("%d\n", mode);
+
+	printf("%d\n", range);
+
 	return 0;
 }
