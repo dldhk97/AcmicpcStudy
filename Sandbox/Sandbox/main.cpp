@@ -21,23 +21,23 @@
 int main()
 {
 	int t, m, n, x, y, cnt;
-	bool isValid;
 	scanf("%d", &t);
 	for (int i = 0; i < t; i++)
 	{
-		isValid = false;
+		cnt = 1;
 		std::cin >> m >> n >> x >> y;
-		for (cnt = x; cnt <= m * n; cnt += m)
+		for (int j = 1, k = 1; cnt < m * n; cnt++, j++, k++)
 		{
-			if (y == ((cnt % n) ? (cnt % n) : n))
-			{
-				isValid = true;
+			if (j > m)
+				j = 1;
+			if (k > n)
+				k = 1;
+			if (j == x && k == y)
 				break;
-			}
 		}
-		if (!isValid)
+		if (cnt >= m * n)
 			cnt = -1;
-		std::cout << cnt << "\n";
+		printf("%d\n", cnt);
 	}
 	return 0;
 }
