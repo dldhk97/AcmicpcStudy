@@ -214,6 +214,6 @@ int main()
 			std::cout << newDequeue.getBack() << "\n";
 		}
 	}
-	
+
 	return 0;
 }
