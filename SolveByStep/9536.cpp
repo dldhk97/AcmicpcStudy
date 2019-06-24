@@ -10,7 +10,7 @@ std::string getUsefulSound(std::string originalSound)
 
 std::string getFoxSound(std::string originalSound, std::string* animalSounds, int animalCnt)
 {
-	std::string result = originalSound;
+	/*std::string result = originalSound;
 	for (int i = 0; i < animalCnt; i++)
 	{
 		std::string targetSound = animalSounds[i];
@@ -21,12 +21,45 @@ std::string getFoxSound(std::string originalSound, std::string* animalSounds, in
 			startIndex = result.find(targetSound);
 		}
 
+	}*/
+
+	std::string result = originalSound;
+	std::string resultArr[100];
+
+	int startIndex = 0;
+	int cnt = 0;
+	for (int i = 0; i < result.length(); i++)
+	{
+		if (result[i] == ' ')
+		{
+			resultArr[cnt++] = result.substr(startIndex, i - startIndex);
+			startIndex = i + 1;
+		}
 	}
+	resultArr[cnt] = result.substr(startIndex, result.length() - startIndex);
+
+	result = "";
+
+	for (int i = 0; i < cnt; i++)
+	{
+		for (int j = 0; j < animalCnt; j++)
+		{
+			if (resultArr[i] == animalSounds[j])
+			{
+				resultArr[i] = "";
+			}
+		}
+	}
+
+	for (int i = 0; i < cnt - 1; i++)
+	{
+		if (resultArr[i] != "")
+			result += resultArr[i] + " ";
+	}
+	result += resultArr[cnt];
+
 	return result;
 }
-
-//접근이 틀렸음.
-//pow는 삭제하면 안되는데 ow를 찾아 지울때 같이 지운다.
 
 int main()
 {
