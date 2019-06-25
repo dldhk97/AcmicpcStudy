@@ -10,19 +10,6 @@ std::string getUsefulSound(std::string originalSound)
 
 std::string getFoxSound(std::string originalSound, std::string* animalSounds, int animalCnt)
 {
-	/*std::string result = originalSound;
-	for (int i = 0; i < animalCnt; i++)
-	{
-		std::string targetSound = animalSounds[i];
-		int startIndex = result.find(targetSound);
-		while (startIndex != -1)
-		{
-			result = result.replace(startIndex, targetSound.length() + 1, "");
-			startIndex = result.find(targetSound);
-		}
-
-	}*/
-
 	std::string result = originalSound;
 	std::string resultArr[100];
 
@@ -36,27 +23,31 @@ std::string getFoxSound(std::string originalSound, std::string* animalSounds, in
 			startIndex = i + 1;
 		}
 	}
-	resultArr[cnt] = result.substr(startIndex, result.length() - startIndex);
+	resultArr[cnt++] = result.substr(startIndex, result.length() - startIndex);
 
 	result = "";
 
-	for (int i = 0; i < cnt; i++)
+	for (int i = 0; i < animalCnt; i++)
 	{
-		for (int j = 0; j < animalCnt; j++)
+		for (int j = 0; j < cnt; j++)
 		{
-			if (resultArr[i] == animalSounds[j])
+			if (animalSounds[i] == resultArr[j])
 			{
-				resultArr[i] = "";
+				resultArr[j] = "";
 			}
 		}
 	}
 
-	for (int i = 0; i < cnt - 1; i++)
+	for (int i = 0; i < cnt; i++)
 	{
 		if (resultArr[i] != "")
+		{
 			result += resultArr[i] + " ";
+		}
+
 	}
-	result += resultArr[cnt];
+
+	result = result.substr(0, result.length() - 1);
 
 	return result;
 }
@@ -65,7 +56,8 @@ int main()
 {
 	int t;
 
-	std::cin >> t;
+	scanf("%d", &t);
+	getchar();
 
 	for (int i = 0; i < t; i++)
 	{
@@ -73,10 +65,8 @@ int main()
 		std::string animals[100];
 		int animalCnt = 0;
 
-		std::cin.ignore();
-		std::cin.clear();
-
 		std::getline(std::cin, sound);
+		getchar();
 
 		while (true)
 		{
@@ -91,7 +81,7 @@ int main()
 				animals[animalCnt++] = getUsefulSound(temp);
 			}
 		}
-		std::cout << getFoxSound(sound, animals, animalCnt);
+		std::cout << getFoxSound(sound, animals, animalCnt) << "\n";
 
 	}
 
