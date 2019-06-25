@@ -1,90 +1,71 @@
 #include <iostream>
 #include <string>
 
-std::string getUsefulSound(std::string originalSound)
-{
-	int startIndex = originalSound.find("goes") + 5;
-
-	return originalSound.substr(startIndex, originalSound.length() - startIndex);
-}
-
-std::string getFoxSound(std::string originalSound, std::string* animalSounds, int animalCnt)
-{
-	std::string result = originalSound;
-	std::string resultArr[100];
-
-	int startIndex = 0;
-	int cnt = 0;
-	for (int i = 0; i < result.length(); i++)
-	{
-		if (result[i] == ' ')
-		{
-			resultArr[cnt++] = result.substr(startIndex, i - startIndex);
-			startIndex = i + 1;
-		}
-	}
-	resultArr[cnt++] = result.substr(startIndex, result.length() - startIndex);
-
-	result = "";
-
-	for (int i = 0; i < animalCnt; i++)
-	{
-		for (int j = 0; j < cnt; j++)
-		{
-			if (animalSounds[i] == resultArr[j])
-			{
-				resultArr[j] = "";
-			}
-		}
-	}
-
-	for (int i = 0; i < cnt; i++)
-	{
-		if (resultArr[i] != "")
-		{
-			result += resultArr[i] + " ";
-		}
-
-	}
-
-	result = result.substr(0, result.length() - 1);
-
-	return result;
-}
-
 int main()
 {
-	int t;
-
-	scanf("%d", &t);
+	int n;
+	scanf("%d", &n);
 	getchar();
 
-	for (int i = 0; i < t; i++)
+	for (int i = 0; i < n; i++)
 	{
-		std::string sound;
-		std::string animals[100];
-		int animalCnt = 0;
+		std::string url, protocol, host;
+		std::string port = "<default>";
+		std::string path = "<default>";
 
-		std::getline(std::cin, sound);
-		getchar();
+		std::getline(std::cin, url);
 
-		while (true)
+		protocol = url.substr(0, url.find("://"));
+		url = url.substr(url.find("://") + 3);
+
+		int portStartIdx = url.find(":");
+		int pathStartIdx = url.find("/");
+
+		if (portStartIdx == -1 && pathStartIdx == -1)	//port와 path 모두 존재하지 않음.
 		{
-			std::string temp;
-			std::getline(std::cin, temp);
-			if (temp == "what does the fox say?")
+			host = url;
+		}
+		else if (portStartIdx != -1 && pathStartIdx != -1)	//port와 path 모두 존재
+		{
+			if (portStartIdx < pathStartIdx)			// ':' 이후 '/' 가 나오는 경우(port와 path 모두 존재)
 			{
-				break;
+				host = url.substr(0, portStartIdx);
+				url = url.substr(portStartIdx + 1);
+				pathStartIdx = url.find("/");
+				port = url.substr(0, pathStartIdx);
+				path = url.substr(pathStartIdx + 1);
 			}
-			else
+			else										// '/' 이후 ':' 가 나오는경우(path만 존재)
 			{
-				animals[animalCnt++] = getUsefulSound(temp);
+				host = url.substr(0, pathStartIdx);
+				path = url.substr(pathStartIdx + 1);
 			}
 		}
-		std::cout << getFoxSound(sound, animals, animalCnt) << "\n";
+		else if (portStartIdx != -1)					//port만 존재
+		{
+			host = url.substr(0, portStartIdx);
+			port = url.substr(portStartIdx + 1);
+		}
+		else if (pathStartIdx != -1)					//path만 존재
+		{
+			host = url.substr(0, pathStartIdx);
+			path = url.substr(pathStartIdx + 1);
+		}
+		else
+		{
+			//url = "ERORR";
+			//protocol = "ERROR";
+		}
 
+		//print
+		std::cout << "URL #" << i + 1 << "\n";
+		std::cout << "Protocol = " << protocol << "\n";
+		std::cout << "Host     = " << host << "\n";
+		std::cout << "Port     = " << port << "\n";
+		std::cout << "Path     = " << path;
+
+		if (i != n - 1)
+			std::cout << "\n\n";
 	}
-
-
 	return 0;
 }
