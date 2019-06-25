@@ -8,7 +8,7 @@ int main()
 	std::stack<int> resultStack;
 	std::string formula;
 	std::getline(std::cin, formula);
-	
+
 	int multiply = 1;
 	int result = 0;
 
@@ -54,7 +54,7 @@ int main()
 			}
 			myStack.pop();				// '('여는괄호 버리기
 			myStack.push(std::to_string(temp) + "@");
-			
+
 		}
 		else
 		{
@@ -95,7 +95,7 @@ int main()
 		myStack.pop();
 	}
 
-	std::cout << result ;
+	std::cout << result;
 
 	return 0;
 }
