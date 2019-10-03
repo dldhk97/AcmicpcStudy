@@ -14,7 +14,7 @@ int main()
 	cin >> input;
 
 	int result = 0;
-	
+
 	stack<char> stk;
 
 	for (int i = 0; i < input.length(); i++)
@@ -26,7 +26,7 @@ int main()
 		else
 		{
 			stk.pop();
-			if (input[i-1] == '(')
+			if (input[i - 1] == '(')
 			{
 				result += stk.size();
 			}
