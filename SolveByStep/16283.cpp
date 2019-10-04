@@ -14,7 +14,7 @@ int main()
 
 	int s, g, cnt = 0;
 
-	for (int i = 1; i < n ; i++)
+	for (int i = 1; i < n; i++)
 	{
 		if (a * i + b * (n - i) == w)
 		{
@@ -32,7 +32,7 @@ int main()
 	{
 		cout << s << " " << g;
 	}
-	
+
 	return 0;
 }
 
