@@ -42,7 +42,7 @@ int solution(int n)
 	//n - 1이 없으면 만든다.
 	if (arr[n - 1] == 0)
 		arr[n - 1] = solution(n - 1);
-	
+
 	//n - 2가 없으면 만든다.
 	if (arr[n - 2] == 0)
 		arr[n - 2] = solution(n - 2);
