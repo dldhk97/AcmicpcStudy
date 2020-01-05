@@ -67,7 +67,7 @@ void calc(int n)
 int getSum(int n)
 {
 	int sum = 0;
-	
+
 	for (int j = 0; j < 10; j++)
 	{
 		sum = (sum + arr[n][j]) % DIVIDE;
@@ -87,6 +87,6 @@ int main()
 	calc(input);
 
 	cout << getSum(input) << '\n';
-	
+
 	return 0;
 }
