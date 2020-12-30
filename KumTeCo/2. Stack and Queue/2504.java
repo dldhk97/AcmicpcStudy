@@ -11,13 +11,6 @@ public class Main{
         return false;
     }
 
-    public static boolean isCloser(char c){
-        if(c == ')' || c == ']'){
-            return true;
-        }
-        return false;
-    }
-
     public static boolean isNumeric(String s){
         try{
             Integer.parseInt(s);
@@ -64,27 +57,22 @@ public class Main{
                 stack.push(String.valueOf(c));
             }
             else{
-                char opener = c == ')' ? '(' : '[';
+                String opener = c == ')' ? "(" : "[";
                 int value = c == ')' ? 2 : 3;
 
-                if(stack.empty()){
-                    System.out.println("0");
-                    return;
-                }
-
-                int totalValue = 0;
+                int sum = 0;
                 while(!stack.empty()){
                     String top = stack.pop();
-                    if(top.equals(String.valueOf(opener))){
-                        if(totalValue != 0){
-                            value = value * totalValue;
+                    if(top.equals(opener)){
+                        if(sum != 0){
+                            value = value * sum;
                         }
                         stack.push(String.valueOf(value));
                         break;
                     }
 
                     if(isNumeric(top)){
-                        totalValue += Integer.parseInt(top);
+                        sum += Integer.parseInt(top);
                         continue;
                     }
 
@@ -96,14 +84,11 @@ public class Main{
             }
         }
 
-        String result = "0";
-
         int values = 0;
         while(!stack.isEmpty()){
             String top = stack.pop();
             values += Integer.parseInt(top);
-            result = String.valueOf(values);
         }
-        System.out.println(result);
+        System.out.println(values);
     }
 }
