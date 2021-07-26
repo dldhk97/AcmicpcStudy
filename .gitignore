@@ -335,3 +335,6 @@ Sandbox/
 
 # InteliJ
 AcmicpcStudy.iml
+
+# VSCode
+launch.json
