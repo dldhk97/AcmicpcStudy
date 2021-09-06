@@ -334,7 +334,7 @@ out/
 Sandbox/
 
 # InteliJ
-AcmicpcStudy.iml
+*.iml
 
 # VSCode
 launch.json
