@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 
+// https://www.acmicpc.net/problem/1916
 public class Main {
 
     static final long MAX = 99999999999L;
