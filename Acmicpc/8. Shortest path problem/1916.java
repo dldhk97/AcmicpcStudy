@@ -1,88 +1,76 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
-class Graph{
-    int size;
+public class Main {
 
-    LinkedList<Node>[] edges;
+    static final long MAX = 99999999999L;
+    static int N, M;
 
-    public Graph(int size){
-        this.size = size;
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
 
-        edges = new LinkedList[size + 1];
-        for(int i = 0 ; i <= size ; i++){
-            edges[i] = new LinkedList<>();
+        List<City> cities = new ArrayList<>();
+        for(int i = 0 ; i < N ; i++)
+            cities.add(new City(i));
+
+        StringTokenizer st;
+        for(int i = 0 ; i < M ; i++){
+            st = new StringTokenizer(br.readLine());
+            int from = Integer.parseInt(st.nextToken()) - 1;
+            int to = Integer.parseInt(st.nextToken()) - 1;
+            long cost = Integer.parseInt(st.nextToken());
+
+            cities.get(from).adjacent.add(new long[]{to, cost});
         }
+
+        st = new StringTokenizer(br.readLine());
+        int start = Integer.parseInt(st.nextToken()) - 1;
+        int end = Integer.parseInt(st.nextToken()) - 1;
+
+        long result = dijkstra(start, end, cities);
+        System.out.println(result);
     }
 
-    public void addEdge(int origin, int destination, int weight){
-        edges[origin].add(new Node(destination, weight));
-    }
+    private static long dijkstra(int start, int end, List<City> cities){
+        long[] costs = new long[N];
+        Arrays.fill(costs, MAX);
 
-    public int dijkstra(int origin, int destination){
-        int[] distances = new int[size + 1];
-        Arrays.fill(distances, Integer.MAX_VALUE);
-        distances[origin] = 0;
-
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.add(new Node(origin, 0));
+        PriorityQueue<long[]> pq = new PriorityQueue<>((o1, o2) -> (int) (o1[1] - o2[1]));
+        pq.add(new long[]{start, 0});
 
         while(!pq.isEmpty()){
-            Node polled = pq.poll();
+            long[] polled = pq.poll();
+            int index = (int)polled[0];
+            long cost = polled[1];
 
-            for(Node n : edges[polled.destination]){
-                int sum = distances[polled.destination] + n.weight;
+            if(cost >= costs[index])
+                continue;
+            costs[index] = cost;
 
-                if(sum < distances[n.destination]){
-                    distances[n.destination] = sum;
-                    pq.add(n);
-                }
+            if(index == end)
+                return cost;
+
+            for(long[] edge : cities.get(index).adjacent){
+                int to = (int)edge[0];
+                long edgeCost = edge[1];
+
+                if(cost + edgeCost < costs[to])
+                    pq.add(new long[]{to, cost + edgeCost});
             }
         }
 
-        return distances[destination];
+        return -1;
     }
+
 }
 
-class Node implements Comparable<Node>{
-    int destination, weight;
+class City{
+    int index;
+    List<long[]> adjacent = new ArrayList<>();
 
-    public Node(int destination, int weight){
-        this.destination = destination;
-        this.weight = weight;
-    }
-
-    @Override
-    public int compareTo(Node n) {
-        return this.weight - n.weight;
-    }
-}
-
-public class Main{
-
-    public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int N = Integer.parseInt(br.readLine());
-        int M = Integer.parseInt(br.readLine());
-
-        Graph graph = new Graph(N);
-
-        for(int i = 1 ; i <= M ; i++){
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int o = Integer.parseInt(st.nextToken());
-            int d = Integer.parseInt(st.nextToken());
-            int w = Integer.parseInt(st.nextToken());
-
-            graph.addEdge(o, d, w);
-        }
-
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int origin = Integer.parseInt(st.nextToken());
-        int destination = Integer.parseInt(st.nextToken());
-
-        int result = graph.dijkstra(origin, destination);
-        System.out.println(result);
+    public City(int index) {
+        this.index = index;
     }
 }
